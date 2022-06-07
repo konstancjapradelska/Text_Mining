@@ -1,13 +1,37 @@
-from data_preparation import text_tokenizer, token
+from data_preparation import text_tokenizer, clear_text, stemm_funtion, stopword_rem
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from matplotlib import pyplot as plt
 from tabulate import tabulate
+from wordcloud import *
+from typing import Dict
 
-data = pd.read_csv('hp.txt', sep='=', usecols=["book_list", "value"])
-data = data['value'][:10]
+data_org = pd.read_csv('hp.txt', sep='=', usecols=["book_list", "value"])
+data = data_org['value'][:10]
 
+# wordcloud
+temp = clear_text(str(data_org))
+temp = stemm_funtion(temp)
+temp = stopword_rem(temp)
+
+bow: Dict[str, float] = {}
+
+for word in temp:
+    if word not in bow.keys():
+        bow[word] = 1
+    elif word in bow.keys():
+        bow[word] += 1
+
+print(bow)
+
+wc = WordCloud()
+wc.generate_from_frequencies(bow)
+plt.imshow(wc, interpolation='bilinear')
+plt.axis("off")
+plt.show()
+
+## wektoryzacja
 vectorizer = CountVectorizer(tokenizer=text_tokenizer)
 x_transform = vectorizer.fit_transform(data)
 column_names = vectorizer.get_feature_names_out()
@@ -31,7 +55,6 @@ common_tockens.plot(kind='barh', x='Token', y='Występowanie')
 print(tabulate(common_tockens, headers='keys', tablefmt='psql'))
 plt.show()
 
-
 ## Key tokens
 key_tokens = []
 key_tokens_value = []
@@ -49,4 +72,3 @@ print("Key tokens:\n", res_key_tokens, "\n")
 res_key_tokens.plot(kind='barh', x='Token', y='Wartość')
 print(tabulate(res_key_tokens, headers='keys', tablefmt='psql'))
 plt.show()
-
