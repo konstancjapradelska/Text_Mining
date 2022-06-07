@@ -12,6 +12,13 @@ def clear_text(string: str) -> str:
     string = re.sub(r'\s+', ' ', string)
     string = string.lower()
     string = string + str(emoticons)
+    string = string.replace('look', '')
+    string = string.replace('said', '')
+    string = string.replace('back', '')
+    string = string.replace('like', '')
+    string = string.replace('know', '')
+    string = string.replace('could', '')
+    string = string.replace('very', '')
     return string
 
 
