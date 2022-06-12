@@ -33,3 +33,12 @@ Run the command: powershell Set-ExecutionPolicy RemoteSigned
 To run application open terminal in root folder and type:
 
 - `venv\Scripts\python .\main.py`
+
+If application runs too long please:
+- in `kolokwium/classifiers.py`:
+  - change line 14 into `data = data_org["text"][:1000]`
+  - change line 15 into `data_type = data_org["airline_sentiment"][:1000]`
+- in `kolokwium/data_exploration.py`
+  - - change line 13 into `data = data_org["text"][:1000]`
+
+And run application again
