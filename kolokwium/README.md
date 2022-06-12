@@ -9,13 +9,11 @@ py -3.9 -m pip install virtualenv
 py -3.9 -m virtualenv venv
 venv\Scripts\activate
 venv\Scripts\pip3 install -r requirements.txt
+venv\Scripts\pip3 install wordcloud-1.8.1-cp39-cp39-win_amd64.whl
+venv\Scripts\python.exe -m nltk.downloader stopwords
 ```
 Next configure your IDE. If you are using PyCharm `->` [Help](https://www.jetbrains.com/help/pycharm/creating-virtual-environment.html#env-requirements) <br>
 `Add interpreter -> Existing enviroment -> Choose interpreter (.\venv\Scripts\python.exe)`
-
-If any problem with Wordcloud `->`  open terminal in root folder and type: 
-
-- `venv\Scripts\pip3 install wordcloud-1.8.1-cp39-cp39-win_amd64.whl`
 
 If any problem with activating venv try: 
 
