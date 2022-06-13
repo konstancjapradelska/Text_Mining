@@ -6,14 +6,15 @@ from matplotlib import pyplot as plt
 from tabulate import tabulate
 from wordcloud import *
 from typing import Dict
+from nltk.tokenize import word_tokenize
 
-data_org = pd.read_csv('hp.txt', sep='=', usecols=["book_list", "value"])
-data = data_org['value'][:10]
+data_org = pd.read_csv('hp2.txt', sep='=', usecols=["book_list", "value"])
+data = data_org['value']
 
 # wordcloud
 temp = clear_text(str(data_org))
 temp = stemm_funtion(temp)
-temp = stopword_rem(temp)
+temp = stopword_rem(word_tokenize(temp))
 
 bow: Dict[str, float] = {}
 
@@ -33,7 +34,7 @@ plt.show()
 
 ## wektoryzacja
 vectorizer = CountVectorizer(tokenizer=text_tokenizer)
-x_transform = vectorizer.fit_transform(data)
+x_transform = vectorizer.fit_transform(data.values.astype('U'))
 column_names = vectorizer.get_feature_names_out()
 array_xtransform = x_transform.toarray()
 

@@ -9,18 +9,17 @@ from sklearn.metrics import plot_confusion_matrix
 from matplotlib import pyplot as plt
 
 # przygotowanie danych
-data_org = pd.read_csv('hp.txt', sep='=', usecols=["book_list", "value"])
-data_org['value'] = data_org['value'].str[:1000]
-
+data_org = pd.read_csv('hp4.txt', sep='=', usecols=["book_list", "value"])
+data_org = data_org.explode('value')
 data = data_org["value"]
 data_type = data_org["book_list"]
 
-data_train, data_test, type_train, type_test = train_test_split(data, data_type, test_size=0.3, random_state=1)
+data_train, data_test, type_train, type_test = train_test_split(data, data_type, test_size=0.3, random_state=2)
 
 # wektoryzacja
 vectorizer = CountVectorizer(tokenizer=data_preparation.text_tokenizer)
-data_train_transform = vectorizer.fit_transform(data_train)
-data_test_transform = vectorizer.transform(data_test)
+data_train_transform = vectorizer.fit_transform(data_train.values.astype('U'))
+data_test_transform = vectorizer.transform(data_test.values.astype('U'))
 
 # Drzewo decyzyjne
 print("\nDrzewo decyzyjne")

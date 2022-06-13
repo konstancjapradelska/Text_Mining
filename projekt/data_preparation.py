@@ -2,10 +2,13 @@ import re
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import CountVectorizer
+from nltk.tokenize import word_tokenize
+
+stop_words = stopwords.words("english")
 
 
 def clear_text(string: str) -> str:
-    emoticons = re.findall(':\)|;\)|;\(|:>|:<|;<|:-\)|;-\)', string)
+    emoticons = re.findall(r'[:|;][-]?[)|(|<>]', string)
     string = re.sub(r'\d', '', string)
     string = re.sub('[<>/]', '', string)
     string = re.sub('[,.;:]', '', string)
@@ -19,32 +22,38 @@ def clear_text(string: str) -> str:
     string = string.replace('know', '')
     string = string.replace('could', '')
     string = string.replace('very', '')
+    string = string.replace('want', '')
+    string = string.replace('around', '')
+    string = string.replace('would', '')
+    string = string.replace('though', '')
+    string = string.replace('think', '')
+    string = string.replace('time', '')
+    string = string.replace('face', '')
+    string = string.replace('hand', '')
+    string = string.replace('come', '')
+    string = string.replace('still', '')
+    string = string.replace('voice', '')
+    string = string.replace('seem', '')
     return string
 
 
-def stemm_funtion(string: str) -> list:
-    stem_list = []
-    porter = PorterStemmer()
-    stream = string.split(' ')
-    for word in stream:
-        stem_list.append(porter.stem(word))
-    return stem_list
+def stopword_rem(text: str) -> list:
+    return [w for w in text if not w.lower() in stop_words]
 
 
-def stopword_rem(text: list) -> list:
-    return [word for word in text if word not in stopwords.words()]
+def stemm_funtion(word: str) -> str:
+    ps = PorterStemmer()
+    return ps.stem(word)
 
 
-def text_tokenizer(text: str) -> list:
-    result = []
-    dt_fk = clear_text(text)
-    dt_fk = stemm_funtion(dt_fk)
-    dt_fk = stopword_rem(dt_fk)
-    for word in dt_fk:
-        if len(word) > 3:
-            result.append(word)
-    return result
-
+def text_tokenizer(text: str):
+    temp = clear_text(text)
+    temp = word_tokenize(temp)
+    temp = stopword_rem(temp)
+    temp_list = []
+    for i in temp:
+        temp_list.append(i)
+    return [stemm_funtion(w) for w in temp_list if len(w) > 3]
 
 def token(x):
     vectorizer = CountVectorizer(tokenizer=text_tokenizer)
