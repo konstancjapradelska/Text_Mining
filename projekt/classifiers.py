@@ -5,7 +5,7 @@ from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import plot_confusion_matrix
+from sklearn.metrics import plot_confusion_matrix, classification_report, accuracy_score
 from matplotlib import pyplot as plt
 
 # przygotowanie danych
@@ -31,6 +31,12 @@ plot_confusion_matrix(DecisionTree, data_test_transform, type_test)
 plt.title('Confusion matrix dla drzewa decyzyjnego')
 plt.show()
 
+predict = DecisionTree.predict(data_test_transform)
+report = classification_report(type_test, predict)
+print("Classification report:")
+print(report)
+
+
 # Las losowy
 print("\nLas losowy")
 RandomForest = RandomForestClassifier(n_estimators=5, random_state=2)
@@ -40,6 +46,12 @@ print("Dokładność w zbiorze testowym: ", (RandomForest.score(data_test_transf
 plot_confusion_matrix(RandomForest, data_test_transform, type_test)
 plt.title('Confusion matrix dla lasu losowego')
 plt.show()
+predict = RandomForest.predict(data_test_transform)
+report = classification_report(type_test, predict)
+print("Classification report:")
+print(report)
+
+
 
 # SVM
 print("\nSVM")
@@ -50,7 +62,10 @@ print("Dokładność w zbiorze testowym: ", (svm.score(data_test_transform, type
 plot_confusion_matrix(svm, data_test_transform, type_test)
 plt.title('Confusion matrix dla SVM')
 plt.show()
-
+predict = svm.predict(data_test_transform)
+report_svm = classification_report(type_test, predict)
+print("Classification report:")
+print(report_svm)
 
 # AdaBoost
 print("\nAdaBoost")
@@ -61,6 +76,10 @@ print("Dokładność w zbiorze testowym: ", (AdaBoost.score(data_test_transform,
 plot_confusion_matrix(AdaBoost, data_test_transform, type_test)
 plt.title('Confusion matrix dla AdaBoost')
 plt.show()
+predict = AdaBoost.predict(data_test_transform)
+report = classification_report(type_test, predict)
+print("Classification report:")
+print(report)
 
 # Bagging
 print("\nBagging")
@@ -71,3 +90,10 @@ print("Dokładność w zbiorze testowym: ", (Bagging.score(data_test_transform, 
 plot_confusion_matrix(Bagging, data_test_transform, type_test)
 plt.title('Confusion matrix dla BaggingClassifier')
 plt.show()
+predict = Bagging.predict(data_test_transform)
+report = classification_report(type_test, predict)
+print("Classification report:")
+print(report)
+
+print("Najlepszy klasyfikator: SVM")
+print(report_svm,"\n Precision: Precyzja określa jaki procent wszystkich przypadków zaklasyfikowanych jako pozytywne był poprawny. Dla analizowaych danych precyzja waha się od 58% do 65%","\n Recall: Recall sprawdza jaki procent wszystkich przypadków, które były rzeczywiście pozytywne, został sklasyfikowany poprawnie. Dla analizowanych danych wynii wahają się d 44% do 69%.","\n F1 - score:Wynik F1 jest ważoną średnią harmoniczną precyzji i przywołania, tak że najlepszy wynik to 1,0, a najgorszy to 0,0. Dla analizowanych danych wyniki wahają się od 0.5 do 0.66.","\n Support:Wsparcie to liczba rzeczywistych wystąpień danej klasy w określonym zbiorze danych. W analizowanych danych 3 klasy mają mniej więcej równą liczbę wystąpień w danych - 1 klasa dstaja ta sama klasa i dlatego przejawia najgorsze rezultaty w pozostałych analizowanych wskaźnikach.")
